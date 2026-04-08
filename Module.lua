@@ -8,6 +8,10 @@ local Fallback = {}
 local Owner = "vita6it"
 local Repository = "Antigravity"
 
+local THREAD_HASH = tostring(os.clock() + math.random()) do
+    _ENV.__THREAD_HASH = THREAD_HASH
+end
+
 local function fetch(file)
     local URL = string.format(
         "https://raw.githubusercontent.com/%s/%s/main/%s",
@@ -63,7 +67,7 @@ end)
 
 AddModule("Configurations", function()
     local Configurations = {}
-    local Files = "Antigravity"
+    local Files = "XYN"
 
     local makefolder = makefolder or function( ... ) return ... end
     local writefile = writefile or function( ... ) return ... end
@@ -73,7 +77,7 @@ AddModule("Configurations", function()
 
     Configurations.FullPaths = `{Configurations.Set}/{PlaceId}.json`
     Configurations.Paths = { Files, Configurations.Set }
-    Configurations.Files = Files or "Antigravity"
+    Configurations.Files = Files or "XYN"
     Configurations.Set = `{Files}/settings`
 
     do
@@ -250,7 +254,8 @@ AddModule("Parallels", function()
                     _ENV.RunningOption, _ENV.RunningMethod = nil, nil
                 end
 
-                while task.wait(not Settings['Smooth Mode'] and 0 or 1) do
+                while task.wait(0) do
+                    if _ENV.__THREAD_HASH ~= THREAD_HASH then break end
                     _ENV.OnFarm = if GetQueue() then true else false
                 end
             end)
@@ -260,13 +265,13 @@ AddModule("Parallels", function()
 
                 task.delay(3, function()
                     if _ENV.error_message then
-                        _ENV.error_message.Text = "- Antigravity Model -\nStart Refresh Options ..."
+                        _ENV.error_message.Text = "Xynapse Shield\nStart Refresh Options ..."
 
                         task.wait(2)
 
                         if _ENV.RunningOption and Fallback[_ENV.RunningOption] then
                             Fallback[_ENV.RunningOption].Value = false
-                            _ENV.error_message.Text = "- Antigravity Model -\nHas been Disabled " .. _ENV.RunningOption
+                            _ENV.error_message.Text = "Xynapse Shield\nHas been Disabled " .. _ENV.RunningOption
                         end
 
                         task.wait(2)
@@ -341,7 +346,7 @@ AddModule("Parallels", function()
             if Time then
                 Threads[Tag] = function(Value)
                     While(Value, Time or 0.1, Function, function()
-                        return not Value
+                        return not Value or _ENV.__THREAD_HASH ~= THREAD_HASH
                     end)
                 end
             else
