@@ -1556,12 +1556,12 @@ function Library:Window(Args)
     end
 
     do
-        local Scality Library:Create("UIScale", {
+        local Scality = Library:Create("UIScale", {
             Parent = Xynpase_1,
             Scale = if Mobile then 1 else 1.45,
         })
         
-        function Library:SetScale(scale)
+        function Window:SetScale(scale)
             scale.Scale = scale
         end
     end
