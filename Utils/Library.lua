@@ -1562,7 +1562,7 @@ function Library:Window(Args)
         })
         
         function Window:SetScale(scale)
-            scale.Scale = scale
+            Scality.Scale = scale
         end
     end
 
