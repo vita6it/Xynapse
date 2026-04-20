@@ -590,6 +590,14 @@ return(function(Installer)
             local Data, Levels = {}, {}
 
             for _, Npcs in pairs(Quest.GuideModule) do
+                if not Npcs.InternalQuestName then
+                    continue
+                end
+                
+                if table.find(Quest.Blacklist, Npcs.InternalQuestName) then
+                    continue
+                end
+                
                 local Level = Npcs.Levels[1]
 
                 if CurrentLevel >= Level then
