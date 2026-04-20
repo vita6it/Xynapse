@@ -514,7 +514,7 @@ return(function(Installer)
 
     AddModule("Quest", function()
         local Quest = {
-            Blacklist = { "BartiloQuest", "MarineQuest", "CitizenQuest" },
+            Blacklist = { "BartiloQuest", "MarineQuest", "CitizenQuest", "ImpelQuest" },
             GuideModule = {}
         }
 
