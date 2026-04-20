@@ -164,6 +164,7 @@ function Library:Rows(Parent, Args)
     })
 
     local Sub_1
+    
     if Desc then
         Sub_1 = Library:Create("TextLabel", {
             BackgroundTransparency = 1,
@@ -389,6 +390,8 @@ function Library:Window(Args)
         CanvasSize = UDim2.new(2, 0, 0, 0),
         ScrollBarThickness = 0,
         ScrollingDirection = Enum.ScrollingDirection.X,
+        ScrollBarImageTransparency = 1,
+        BorderSizePixel = 0,
     })
 
     local UIListLayout_4 = Library:Create("UIListLayout", {
