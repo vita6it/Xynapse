@@ -520,13 +520,13 @@ return(function(Installer)
 
         Quest.Quests = (function()
             if Executor == "XENO" then
-                return fetch("Utils/Quests.luau")
+                return fetch("Utils/Quests.lua")
             end
 
             local Success, Quests = pcall(require, ReplicatedStorage:WaitForChild('Quests'))
 
             if not Success or type(Quests) ~= "table" then
-                return fetch("Utils/Quests.luau")
+                return fetch("Utils/Quests.lua")
             end
 
             return Quests
@@ -536,13 +536,13 @@ return(function(Installer)
             local sea = GetSea()
 
             if Executor == "XENO" then
-                return fetch("Utils/GuideModule.luau")[sea]
+                return fetch("Utils/GuideModule.lua")[sea]
             end
 
             local Success, GuideModule = pcall(require, ReplicatedStorage:WaitForChild('GuideModule'))
 
             if not Success or type(GuideModule) ~= "table" then
-                return fetch("Utils/GuideModule.luau")[sea]
+                return fetch("Utils/GuideModule.lua")[sea]
             end
 
             return GuideModule['Data']['NPCList']
