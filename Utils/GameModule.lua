@@ -326,7 +326,7 @@ return(function(Installer)
 
         Module.GateList = {
             [1] = {
-                Vector3.new(3864, 5, -1926), -- Gate
+                Vector3.new(3860, 26, -1780), -- Gate
                 Vector3.new(61163, 5, 1819), -- Under Water
                 Vector3.new(-7894, 5545, -380), -- Sky 2
                 Vector3.new(-4607, 872, -1667) -- Sky 1
