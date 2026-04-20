@@ -254,7 +254,14 @@ AddModule("Parallels", function()
                 end
 
                 while task.wait(0) do
-                    if _ENV.__THREAD_HASH ~= THREAD_HASH then break end
+                    if _ENV.__THREAD_HASH ~= THREAD_HASH then
+                        _ENV.ISLOADED = false
+                        _ENV.RunningOption, _ENV.RunningMethod = nil, nil
+                        _ENV.OnFarm = false
+                        
+                        break
+                    end
+                    
                     _ENV.OnFarm = if GetQueue() then true else false
                 end
             end)
