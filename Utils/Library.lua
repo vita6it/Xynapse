@@ -475,7 +475,7 @@ function Library:Window(Args)
             })
 
             UIListLayout_1:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
-                NewPages_1.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_1.AbsoluteContentSize.X + 15)
+                NewPages_1.CanvasSize = UDim2.new(0, 0, 0, UIListLayout_1.AbsoluteContentSize.Y + 15)
             end)
 
             Library:Create("UIPadding", {
