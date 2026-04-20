@@ -258,7 +258,7 @@ AddModule("Parallels", function()
                         _ENV.ISLOADED = false
                         _ENV.RunningOption, _ENV.RunningMethod = nil, nil
                         _ENV.OnFarm = false
-                        
+                        warn('Break Old Queue')
                         break
                     end
                     
@@ -326,8 +326,8 @@ AddModule("Parallels", function()
 
             if not _ENV.ISLOADED then
                 _ENV.ISLOADED = true
-
                 task.spawn(RunQueue, FarmFunctions)
+                warn('Run New Queue')
             end
         end
 
