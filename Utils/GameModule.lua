@@ -986,8 +986,8 @@ return(function(Installer)
         end
 
         local Highlight = Instance.new("Highlight") do
-            Highlight.FillColor = Color3.fromRGB(255, 0, 127)
-            Highlight.OutlineColor = Color3.fromRGB(255, 0, 127)
+            Highlight.FillColor = Color3.fromRGB(255, 255, 255)
+            Highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
             Highlight.FillTransparency = 0.3
         end
 
