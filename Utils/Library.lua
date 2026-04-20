@@ -386,7 +386,7 @@ function Library:Window(Args)
         BackgroundTransparency = 1,
         Name = "Tabs",
         Parent = Right_1,
-        Size = UDim2.new(0, 240, 0, 35),
+        Size = UDim2.new(0, 230, 0, 35),
         CanvasSize = UDim2.new(2, 0, 0, 0),
         ScrollBarThickness = 0,
         ScrollingDirection = Enum.ScrollingDirection.X,
@@ -399,7 +399,7 @@ function Library:Window(Args)
         Parent = Tabs_1,
         FillDirection = Enum.FillDirection.Horizontal,
         SortOrder = Enum.SortOrder.LayoutOrder,
-        HorizontalAlignment = Enum.HorizontalAlignment.Right,
+        HorizontalAlignment = Enum.HorizontalAlignment.Left,
         VerticalAlignment = Enum.VerticalAlignment.Center,
     })
 
