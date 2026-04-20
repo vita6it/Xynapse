@@ -215,7 +215,6 @@ AddModule("Parallels", function()
 
     do
         local function ShowErrorMessage(ErrorMessage)
-            _ENV.ISLOADED = false
             _ENV.OnFarm = false
 
             local text = (`error [ { _ENV.RunningOption or "Null" } ] { ErrorMessage }`)
@@ -255,7 +254,6 @@ AddModule("Parallels", function()
 
                 while task.wait(0) do
                     if _ENV.__THREAD_HASH ~= THREAD_HASH then
-                        _ENV.ISLOADED = false
                         _ENV.RunningOption, _ENV.RunningMethod = nil, nil
                         _ENV.OnFarm = false
                         warn('Break Old Queue')
@@ -324,11 +322,7 @@ AddModule("Parallels", function()
             _ENV.ENABLED_OPTIONS = Enabled
             _ENV.FARM_FUNCTIONS = FarmFunctions
 
-            if not _ENV.ISLOADED then
-                _ENV.ISLOADED = true
-                task.spawn(RunQueue, FarmFunctions)
-                warn('Run New Queue')
-            end
+            task.spawn(RunQueue, FarmFunctions)
         end
 
         do table.clear(Functions) end
