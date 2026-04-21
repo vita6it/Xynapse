@@ -170,7 +170,7 @@ function Library:Rows(Parent, Args)
             BackgroundTransparency = 1,
             Name = "Sub",
             Parent = Text_1,
-            Size = UDim2.new(0, 72, 0, 9),
+            Size = UDim2.new(1, -40, 0, 9),
             Selectable = false,
             FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
             Text = Desc,
@@ -179,6 +179,7 @@ function Library:Rows(Parent, Args)
             TextTransparency = 0.5,
             TextXAlignment = Enum.TextXAlignment.Left,
             TextYAlignment = Enum.TextYAlignment.Top,
+            TextTruncate = Enum.TextTruncate.AtEnd
         })
     end
 
