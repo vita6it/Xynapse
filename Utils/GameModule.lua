@@ -992,6 +992,8 @@ return(function(Installer)
             BodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
             BodyVelocity.P = 1000
         end
+        
+        BodyVelocity.Parent = HumanoidRootPart
 
         local Highlight = Instance.new("Highlight") do
             Highlight.FillColor = Color3.fromRGB(255, 255, 255)
@@ -1076,7 +1078,7 @@ return(function(Installer)
             end
         end
 
-        Connect(RunService.Stepped, function()
+        Connect(RunService.RenderStepped, function()
             if IsAlive() then
                 UpdateVelocityOnStepped(Character)
                 NoClipOnStepped(Character)
@@ -1148,11 +1150,11 @@ return(function(Installer)
             return false
         end
 
-        function Cache:Fruit(IsNotLower)
+        function Cache:Fruit(High)
             local Fruits = {}
 
             for _, v in next, Module:ComF("GetFruits") do
-                if IsNotLower and v.Price >= 999999 or v.Price <= 999999 then
+                if High and v.Price >= 999999 or v.Price <= 999999 then
                     Fruits[v.Name] = v.Price
                 end
             end
@@ -2055,21 +2057,6 @@ return(function(Installer)
         end)(GetSea())
 
         Data['Shop'] = {
-            ["Fighting Style"] = {
-                ["Buy Black Leg"] = { "BuyBlackLeg" },
-                ["Buy Electro"] = { "BuyElectro" },
-                ["Buy Fishman Karate"] = { "BuyFishmanKarate" },
-                ["Buy Dragon Claw"] = { "BlackbeardReward", "DragonClaw", "2" },
-                ["Buy Superhuman"] = { "BuySuperhuman" },
-                ["Buy Death Step"] = { "BuyDeathStep" },
-                ["Buy Sharkman Karate"] = { "BuySharkmanKarate" },
-                ["Buy Electric Claw"] = { "BuyElectricClaw" },
-                ["Buy Dragon Talon"] = { "BuyDragonTalon" },
-                ["Buy GodHuman"] = { "BuyGodhuman" },
-                ["Buy Sanguine Art"] = { "BuySanguineArt" },
-                ["Buy Divine Art"] = { "BuyDivineArt" },
-            },
-
             ["Ability"] = {
                 ["Buy Geppo"] = { "BuyHaki", "Geppo" },
                 ["Buy Buso"] = { "BuyHaki", "Buso" },
@@ -2173,7 +2160,6 @@ return(function(Installer)
     task.spawn(function()
         local SpawnLocations = Module.SpawnLocations
         local EnemyLocations = Module.EnemyLocations
-
         local EnemiesModule = Module.EnemiesModule
 
         local function NewIslandAdded(Island)
@@ -2197,66 +2183,6 @@ return(function(Installer)
         for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
         Connect(EnemySpawns.ChildAdded, NewSpawn)
         Connect(Locations.ChildAdded, NewIslandAdded)
-
-        local function ShouldStop(Breake)
-            return not _ENV.OnFarm or not IsAlive() or (Breake and Breake())
-        end
-
-        local function WaitAtSpawnPoints(enemyName, spawnPoints, Breake, Teleport)
-            if ShouldStop(Breake) then return end
-
-            for _, spawnCFrame in pairs(spawnPoints) do
-                if ShouldStop(Breake) then return end
-                if Module.EnemiesModule:GetClosestByTag(enemyName) then return end
-
-                Teleport(spawnCFrame)
-
-                local waitStart = tick()
-                local waitDelay = Settings['Wait Enemies Delay'] or 0.75
-
-                while tick() - waitStart < waitDelay do
-                    if ShouldStop(Breake) then return end
-                    if Module.EnemiesModule:GetClosestByTag(enemyName) then return end
-
-                    task.wait(0.1)
-                end
-
-                if Module.EnemiesModule:GetClosestByTag(enemyName) then
-                    return
-                end
-
-            end
-
-            if not ShouldStop(Breake) and not Module.EnemiesModule:GetClosestByTag(enemyName) then
-                WaitAtSpawnPoints(enemyName, spawnPoints, Breake, Teleport)
-            end
-        end
-
-        local function WaitForEnemySpawn(Name, Breake, Teleport)
-            if ShouldStop(Breake) then return end
-
-            local enemyNames = type(Name) == "table" and Name or {Name}
-
-            for _, enemyName in ipairs(enemyNames) do
-                if ShouldStop(Breake) then return end
-                if Module.EnemiesModule:GetClosestByTag(enemyName) then return end
-
-                if Module.EnemiesModule:IsSpawned(enemyName) then
-                    local spawnPoints = EnemyLocations[enemyName]
-
-                    if spawnPoints then
-                        WaitAtSpawnPoints(enemyName, spawnPoints, Breake, Teleport)
-                    end
-                end
-
-                if ShouldStop(Breake) then return end
-                if Module.EnemiesModule:GetClosestByTag(enemyName) then return end
-            end
-        end
-
-        function Module:WaitForEnemy(Name, Breake, Teleport)
-            return WaitForEnemySpawn(Name, Breake, Teleport)
-        end
     end)
 
     task.defer(function()
