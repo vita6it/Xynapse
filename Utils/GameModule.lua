@@ -344,6 +344,48 @@ return(function(Installer)
                 Vector3.new(-12540, 333, -7600) -- Mansion 
             },
         }
+        
+        Module.FruitsId = {
+            ["rbxassetid://15124425041"] = "Rocket",
+            ["rbxassetid://15123685330"] = "Spin",
+            ["rbxassetid://15123613404"] = "Blade",
+            ["rbxassetid://15123689268"] = "Spring",
+            ["rbxassetid://15123595806"] = "Bomb",
+            ["rbxassetid://15123677932"] = "Smoke",
+            ["rbxassetid://15124220207"] = "Spike",
+            ["rbxassetid://121545956771325"] = "Flame",
+            ["rbxassetid://15123673019"] = "Sand",
+            ["rbxassetid://15123618591"] = "Dark",
+            ["rbxassetid://77885466312115"] = "Eagle",
+            ["rbxassetid://15112600534"] = "Diamond",
+            ["rbxassetid://15123640714"] = "Light",
+            ["rbxassetid://15123668008"] = "Rubber",
+            ["rbxassetid://15123662036"] = "Ghost",
+            ["rbxassetid://15123645682"] = "Magma",
+            ["rbxassetid://15123606541"] = "Quake",
+            ["rbxassetid://15123643097"] = "Love",
+            ["rbxassetid://15123681598"] = "Spider",
+            ["rbxassetid://116828771482820"] = "Creation",
+            ["rbxassetid://15123679712"] = "Sound",
+            ["rbxassetid://15123654553"] = "Phoenix",
+            ["rbxassetid://15123656798"] = "Portal",
+            ["rbxassetid://15123670514"] = "Rumble",
+            ["rbxassetid://15123652069"] = "Pain",
+            ["rbxassetid://15123587371"] = "Blizzard",
+            ["rbxassetid://15123633312"] = "Gravity",
+            ["rbxassetid://15123648309"] = "Mammoth",
+            ["rbxassetid://15694681122"] = "T-Rex",
+            ["rbxassetid://15123624401"] = "Dough",
+            ["rbxassetid://15123675904"] = "Shadow",
+            ["rbxassetid://10773719142"] = "Venom",
+            ["rbxassetid://15123616275"] = "Control",
+            ["rbxassetid://11911905519"] = "Spirit",
+            ["rbxassetid://15123638064"] = "Leopard",
+            ["rbxassetid://15487764876"] = "Kitsune",
+            ["rbxassetid://115276580506154"] = "Yeti",
+            ["rbxassetid://118054805452821"] = "Gas",
+            ["rbxassetid://95749033139458"] = "Dragon East"
+        }
     end
 
     AddModule("Aimbot", function()
@@ -2439,6 +2481,7 @@ return(function(Installer)
             PrehistoricIsland = "Prehistoric Island",
             KitsuneIsland = "Kitsune Island",
             MysticIsland = "Mirage Island",
+            FrozenDimension = "Frozen Dimension"
         }
 
         local FRUIT_SPAWNERS = { "AppleSpawner", "PineappleSpawner", "BananaSpawner" }
@@ -2459,6 +2502,21 @@ return(function(Installer)
             end
 
             return "Unknown Berry"
+        end
+        
+        local function GetBloxFruitName(Fruit)
+            local Current = Fruit.Name
+            
+            local Idle = Fruit:FindFirstChild('Idle', true)
+            if not Idle then return Current end
+            
+            local Id = tostring(Idle.AnimationId)
+            if not Id then return Current end
+            
+            local Name = Module.FruitsId[Id]
+            if not Name then return Current end
+            
+            return Name
         end
 
         local function NewChests()
@@ -2521,7 +2579,7 @@ return(function(Installer)
                     return v.Name:find("Fruit") ~= nil
                 end,
                 CustomName = function(v, Dist)
-                    return GetText(v.Name, Dist)
+                    return GetText(GetBloxFruitName(v), Dist)
                 end,
             },
             ["Flowers"] = {
@@ -2538,7 +2596,8 @@ return(function(Installer)
                 Colors = Color3.fromRGB(255, 255, 255),
                 Folder = Characters,
                 Valid = function(v)
-                    return Players:GetPlayerFromCharacter(v) ~= LocalPlayer
+                    local Player = Players:GetPlayerFromCharacter(v)
+                    return Player and Player ~= LocalPlayer
                 end,
             },
             ["Chest"] = {
@@ -2579,9 +2638,11 @@ return(function(Installer)
                 end,
                 CustomName = function(v, Dist)
                     local Owner = v:FindFirstChild("Owner")
+                    
                     if Owner and Owner.Value then
                         return GetText(string.format("%s [ %s ]", v.Name, tostring(Owner.Value)), Dist)
                     end
+                    
                     return GetText(v.Name, Dist)
                 end,
             },
