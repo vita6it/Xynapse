@@ -344,7 +344,7 @@ return(function(Installer)
                 Vector3.new(-12540, 333, -7600) -- Mansion 
             },
         }
-        
+
         Module.FruitsId = {
             ["rbxassetid://15124425041"] = "Rocket",
             ["rbxassetid://15123685330"] = "Spin",
@@ -2503,20 +2503,20 @@ return(function(Installer)
 
             return "Unknown Berry"
         end
-        
+
         local function GetBloxFruitName(Fruit)
             local Current = Fruit.Name
             if not Fruit:IsA('Model') then return Current end
-            
+
             local Idle = Fruit:FindFirstChild('Idle', true)
             if not Idle then return Current end
-            
+
             local Id = tostring(Idle.AnimationId)
             if not Id then return Current end
-            
+
             local Name = Module.FruitsId[Id]
             if not Name then return Current end
-            
+
             return Name .. " [ Spawned ]"
         end
 
@@ -2562,6 +2562,22 @@ return(function(Installer)
             return List
         end
 
+        local function NewGear()
+            local Gears = {}
+
+            local Mirage = Map:FindFirstChild('MysticIsland')
+
+            if not Mirage then return Gears end
+
+            for _, v in Mirage:GetChildren() do
+                if v:IsA("MeshPart") and v.BrickColor == BrickColor.new('Pastel Blue')  then
+                    table.insert(Gears, v)
+                end
+            end
+
+            return Gears
+        end
+
         local COLORS = {
             ["Spacial Island"] = {
                 Colors = Color3.fromRGB(255, 0, 127),
@@ -2581,7 +2597,23 @@ return(function(Installer)
                 end,
                 CustomName = function(v, Dist)
                     return GetText(GetBloxFruitName(v), Dist)
+                end
+            },
+            ["Sea Beast"] = {
+                Colors = Color3.fromRGB(0, 85, 127),
+                Folder = SeaBeasts,
+                Valid = function(v)
+                    return Module.Ocean:IsAlive(v) and v.Parent ~= nil
                 end,
+                CustomName = function(v, Dist)
+                    local Health = v:FindFirstChild("Health")
+
+                    if not Health then
+                        return GetText("Sea Beast", Dist)
+                    end
+
+                    return GetText(string.format("Sea Beast [ %i ]", Health.Value), Dist)
+                end
             },
             ["Flowers"] = {
                 Colors = Color3.fromRGB(255, 170, 255),
@@ -2631,6 +2663,16 @@ return(function(Installer)
                     return GetText(v.Name, Dist)
                 end,
             },
+            ["Gear"] = {
+                Colors = Color3.fromRGB(85, 255, 255),
+                Folder = NewGear,
+                Valid = function(v)
+                    return v:IsA("MeshPart") and v.Parent ~= nil
+                end,
+                CustomName = function(v, Dist)
+                    return GetText("Gear", Dist)
+                end,
+            },
             ["Ship"] = {
                 Colors = Color3.fromRGB(115, 169, 255),
                 Folder = Boats,
@@ -2639,11 +2681,11 @@ return(function(Installer)
                 end,
                 CustomName = function(v, Dist)
                     local Owner = v:FindFirstChild("Owner")
-                    
+
                     if Owner and Owner.Value then
                         return GetText(string.format("%s [ %s ]", v.Name, tostring(Owner.Value)), Dist)
                     end
-                    
+
                     return GetText(v.Name, Dist)
                 end,
             },
