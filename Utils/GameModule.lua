@@ -2506,6 +2506,7 @@ return(function(Installer)
         
         local function GetBloxFruitName(Fruit)
             local Current = Fruit.Name
+            if not Fruit:IsA('Model') then return Current end
             
             local Idle = Fruit:FindFirstChild('Idle', true)
             if not Idle then return Current end
@@ -2516,7 +2517,7 @@ return(function(Installer)
             local Name = Module.FruitsId[Id]
             if not Name then return Current end
             
-            return Name
+            return Name .. " [ Spawned ]"
         end
 
         local function NewChests()
