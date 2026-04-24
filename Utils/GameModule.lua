@@ -2601,19 +2601,25 @@ return(function(Installer)
             },
             ["Sea Beast"] = {
                 Colors = Color3.fromRGB(0, 85, 127),
-                Folder = SeaBeasts,
+                Folder = function()
+                    return SeaBeasts:GetChildren()
+                end,
                 Valid = function(v)
-                    return v:IsA("Model") and v:FindFirstChild("Health") and v.Health.Value > 0
+                    if not v:IsA("Model") then return false end
+                    
+                    local Health = v:FindFirstChild("Health")
+                    
+                    return Health ~= nil and Health.Value > 0
                 end,
                 CustomName = function(v, Dist)
                     local Health = v:FindFirstChild("Health")
-
+                    
                     if not Health then
                         return GetText("Sea Beast", Dist)
                     end
-
+                    
                     return GetText(string.format("Sea Beast [ %i ]", Health.Value), Dist)
-                end
+                end,
             },
             ["Flowers"] = {
                 Colors = Color3.fromRGB(255, 170, 255),
