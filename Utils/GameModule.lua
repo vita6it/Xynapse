@@ -2603,7 +2603,7 @@ return(function(Installer)
                 Colors = Color3.fromRGB(0, 85, 127),
                 Folder = SeaBeasts,
                 Valid = function(v)
-                    return Module.Ocean:IsAlive(v) and v.Parent ~= nil
+                    return v:IsA("Model") and v:FindFirstChild("Health") and v.Health.Value > 0
                 end,
                 CustomName = function(v, Dist)
                     local Health = v:FindFirstChild("Health")
