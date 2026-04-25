@@ -1828,6 +1828,8 @@ return(function(Installer)
         end
 
         function SkillModule:Use()
+            if not Character then return end
+            
             if OnFirstTime then
                 OnFirstTime = false do
                     return Module:Equip("Melee", true) 
@@ -1868,6 +1870,46 @@ return(function(Installer)
             VirtualInputManager:SendKeyEvent(true, Enum.KeyCode[SkillName], false, game)
             task.wait(0.05)
             VirtualInputManager:SendKeyEvent(false, Enum.KeyCode[SkillName], false, game)
+        end
+        
+        local function GetUnCooldownSkill(Name, Select)
+            local ToolContainer = Skills:FindFirstChild(Name)
+            if not ToolContainer then return nil end
+
+            for _, KeyName in ipairs(Select) do
+                local Skill = ToolContainer:FindFirstChild(KeyName)
+                if not Skill or not Skill:IsA("Frame") then continue end
+                if not IsSkillUnlocked(Skill) then continue end
+                if IsSkillOnCooldown(Skill) then continue end
+
+                return KeyName
+            end
+
+            return nil
+        end
+
+        local LAST_SIMPLE = 0
+
+        function SkillModule:Skill(Select)
+            if not Character then return end
+            
+            if not Select or #Select == 0 then return end
+
+            if tick() - LAST_SIMPLE < 0.2 then return end
+
+            local Equipped = Character:FindFirstChildOfClass("Tool")
+            
+            if not Equipped then return end
+
+            local Skill = GetUnCooldownSkill(Equipped.Name, Select)
+            
+            if not Skill then return end
+
+            LAST_SIMPLE = tick()
+
+            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode[Skill], false, game)
+            task.wait(0.05)
+            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode[Skill], false, game)
         end
 
         task.spawn(BindBackpack)
