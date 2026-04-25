@@ -427,7 +427,7 @@ return(function(Installer)
         local RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
         local RegisterHit = Net:WaitForChild("RE/RegisterHit")
         
-        local GunModule = fetch('Utils/GunModule.lua')
+        local GunModule = Executor ~= "XENO" and fetch('Utils/GunModule.lua') or nil
 
         local Hash coroutine.wrap(function()
             Hash = tostring(LocalPlayer.UserId):sub(2, 4) .. tostring(coroutine.running()):sub(11, 15)
@@ -513,18 +513,6 @@ return(function(Installer)
             end
         end
 
-        local function GetWeapons(a, Tip)
-            if not IsAlive() then return end
-
-            for _, Tool in a:GetChildren() do
-                if Tool:IsA("Tool") and Tool.ToolTip == Tip then
-                    return Tool
-                end
-            end
-
-            return nil
-        end
-
         Connect(Stepped, function()
             if not Settings['Fast Attack'] then return end
 
@@ -536,7 +524,7 @@ return(function(Installer)
 
             local Name = tostring(Equiped)
             
-            if Equiped.ToolTip == 'Gun' then
+            if Equiped.ToolTip == 'Gun' and typeof(GunModule) == 'table' then
                 return GunModule:FireTarget(Equiped, Character)
             end
 
