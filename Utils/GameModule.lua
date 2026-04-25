@@ -2827,7 +2827,7 @@ return(function(Installer)
                         local arg1, arg2 = ...
 
                         if method == "InvokeServer" and arg1 == 'X' and typeof(arg2) == 'Vector3' and self.Name == "" then
-                            if Module.Aimbot:Check() then
+                            if Module.Aimbot:Check() or Settings['Skill Usage'] then
                                 return _Old(self, arg1, _ENV.Target)
                             end
 
@@ -2835,7 +2835,7 @@ return(function(Installer)
                         end
 
                         if method == "FireServer" and self.Name == "RemoteEvent" and typeof(arg1) == "Vector3" and arg2 == nil then
-                            if Module.Aimbot:Check() then
+                            if Module.Aimbot:Check() or Settings['Skill Usage'] then
                                 return _Old(self, _ENV.Target)
                             end
 
@@ -2848,10 +2848,6 @@ return(function(Installer)
 
                 _ENV.xyn_original = _Old
             end
-
-            --local EffectsLocalThread: LocalScript = PlayerScripts.EffectsLocalThread do
-            --    EffectsLocalThread.Disabled = true 
-            --end 
         end
     end)
 
