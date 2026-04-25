@@ -426,6 +426,8 @@ return(function(Installer)
 
         local RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
         local RegisterHit = Net:WaitForChild("RE/RegisterHit")
+        
+        local GunModule = fetch('Utils/GunModule.lua')
 
         local Hash coroutine.wrap(function()
             Hash = tostring(LocalPlayer.UserId):sub(2, 4) .. tostring(coroutine.running()):sub(11, 15)
@@ -523,7 +525,7 @@ return(function(Installer)
             return nil
         end
 
-        Connect(RenderStepped, function()
+        Connect(Stepped, function()
             if not Settings['Fast Attack'] then return end
 
             if not IsAlive() then return end
@@ -533,6 +535,10 @@ return(function(Installer)
             if not Equiped then return end
 
             local Name = tostring(Equiped)
+            
+            if Equiped.ToolTip == 'Gun' then
+                return GunModule:FireTarget(Equiped, Character)
+            end
 
             if Name == 'Ice-Ice' or Name == 'Light-Light' then
                 return pcall(Attack)
