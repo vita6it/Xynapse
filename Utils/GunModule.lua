@@ -150,10 +150,14 @@ local GunClient = (function()
 
     local function ConvertToGunHits()
         local Target, Hitbox
+        local MinDist = math.huge
 
         for index = 1, #CurrentBladeHits do
             local Hit = CurrentBladeHits[index]
-            if not Target or CanChangeGunTarget(Target, Hit[1]) then
+            local Dist = (MyRootPartPosition - Hit[2].Position).Magnitude
+            
+            if Dist < MinDist then
+                MinDist = Dist
                 Hitbox, Target = Hit[2], Hit[1]
             end
         end
