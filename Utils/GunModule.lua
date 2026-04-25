@@ -348,13 +348,17 @@ local GunClient = (function()
         end
     end
     
-    function GunClient:FireTarget(Equipped, Position, Character)
-        local Cooldown = Equipped:FindFirstChild("Cooldown") and Equipped.Cooldown.Value or 0.3
+    function GunClient:FireTarget(Equipped, Character)
+        if not Character then return end
+        
+        local Cooldown = Equipped:FindFirstChild("Cooldown")
+        local Current = Cooldown and Cooldown.Value or 0.3
 
-        if (tick() - self.Debounce) >= Cooldown then
+        if (tick() - self.Debounce) >= Current then
             self.Equipped = Equipped
             self.Debounce = tick()
-            MyRootPartPosition = Position
+            
+            MyRootPartPosition = Character:GetPivot().Position
 
             if SUCCESS_SHOOT and SHOOT_FUNCTION then
                 self:UseGunShoot(Character, Equipped)
