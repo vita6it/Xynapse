@@ -417,18 +417,18 @@ AddModule("Plugins", function()
     local Parallels = Utils.Parallels
     local Others = Utils.Others
     local Asset = Utils.Asset
-    
+
     _ENV.GLOBALS_SETTINGS = setmetatable({}, {
         __index = function(_, key)
             if _ENV.XYN_DEBUG_OPTIONS then
-                warn("__INDEX", _ENV.GLOBALS_SETTINGS[key]) 
+                warn("__INDEX", key) 
             end
             
             return Settings[key]
         end,
         __newindex = function(_, key, value)
             if _ENV.XYN_DEBUG_OPTIONS then
-                warn("__NEW_INDEX", _ENV.GLOBALS_SETTINGS[key]) 
+                warn("__NEW_INDEX", value) 
             end
             
             Settings[key] = value
