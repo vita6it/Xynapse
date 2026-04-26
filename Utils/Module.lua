@@ -10,6 +10,7 @@ local Repository = "Xynapse"
 
 local THREAD_HASH = tostring(os.clock() + math.random()) do
     _ENV.__THREAD_HASH = THREAD_HASH
+    _ENV.GLOBALS_SETTINGS = {}
 end
 
 local function fetch(file)
@@ -417,23 +418,6 @@ AddModule("Plugins", function()
     local Parallels = Utils.Parallels
     local Others = Utils.Others
     local Asset = Utils.Asset
-
-    _ENV.GLOBALS_SETTINGS = setmetatable({}, {
-        __index = function(_, key)
-            if _ENV.XYN_DEBUG_OPTIONS then
-                warn("__INDEX", key) 
-            end
-            
-            return Settings[key]
-        end,
-        __newindex = function(_, key, value)
-            if _ENV.XYN_DEBUG_OPTIONS then
-                warn("__NEW_INDEX", value) 
-            end
-            
-            Settings[key] = value
-        end
-    })
     
     local Enabled, Options = Parallels.Options()
     local Library = fetch('Utils/Library.lua')
@@ -476,9 +460,10 @@ AddModule("Plugins", function()
             Desc = Info[2],
             Value = Settings[Flag],
             Callback = function(value)
+                _ENV.GLOBALS_SETTINGS[Flag] = value
+                
                 Settings[Flag] = value
                 Configurations:Save(Flag, value)
-
                 Enabled[Flag] = value
 
                 if value then
@@ -507,6 +492,7 @@ AddModule("Plugins", function()
             Callback = function(value)
                 Settings[Flag] = value
                 Configurations:Save(Flag, value)
+                _ENV.GLOBALS_SETTINGS[Flag] = value
                 
                 if Callback then Callback(value) end
             end
@@ -521,6 +507,7 @@ AddModule("Plugins", function()
             Callback = function(value)
                 Settings[Flag] = value
                 Configurations:Save(Flag, value)
+                _ENV.GLOBALS_SETTINGS[Flag] = value
 
                 if Callback then Callback(value) end
             end
@@ -532,7 +519,13 @@ AddModule("Plugins", function()
             Title = Info[1],
             Desc = Info[2],
             Text = Settings[Flag] or "None",
-            Callback = Callback,
+            Callback = function(value)
+                Settings[Flag] = value
+                Configurations:Save(Flag, value)
+                _ENV.GLOBALS_SETTINGS[Flag] = value
+
+                if Callback then Callback(value) end
+            end,
         })
     end
     
