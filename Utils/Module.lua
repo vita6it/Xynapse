@@ -418,6 +418,23 @@ AddModule("Plugins", function()
     local Others = Utils.Others
     local Asset = Utils.Asset
     
+    _ENV.GLOBALS_SETTINGS = setmetatable({}, {
+        __index = function(_, key)
+            if _ENV.XYN_DEBUG_OPTIONS then
+                warn("__INDEX", _ENV.GLOBALS_SETTINGS[key]) 
+            end
+            
+            return Settings[key]
+        end,
+        __newindex = function(_, key, value)
+            if _ENV.XYN_DEBUG_OPTIONS then
+                warn("__NEW_INDEX", _ENV.GLOBALS_SETTINGS[key]) 
+            end
+            
+            Settings[key] = value
+        end
+    })
+    
     local Enabled, Options = Parallels.Options()
     local Library = fetch('Utils/Library.lua')
     
