@@ -101,7 +101,6 @@ return(function(Installer)
 
     local Executor = string.upper(if identifyexecutor then identifyexecutor() else "NULL")
 
-    local GLOBALS_SETTINGS = _ENV.GLOBALS_SETTINGS or Settings
     local BRING_TAG = _ENV._Bring_Tag or tostring(math.random(80, 2e4))
     local KILLAURA_TAG = _ENV._KillAura_Tag or tostring(math.random(120, 2e4))
 
@@ -398,7 +397,7 @@ return(function(Installer)
 
         function Aimbot:Check()
             for _,v in pairs(self._index) do
-                if GLOBALS_SETTINGS[v] == true then
+                if _ENV.GLOBALS_SETTINGS[v] == true then
                     return true 
                 end 
             end 
@@ -2828,7 +2827,7 @@ return(function(Installer)
                         local arg1, arg2 = ...
 
                         if method == "InvokeServer" and arg1 == 'X' and typeof(arg2) == 'Vector3' and self.Name == "" then
-                            if Module.Aimbot:Check() or (GLOBALS_SETTINGS['Skill Usage'] and _ENV.__XYN_TARGETER) then
+                            if Module.Aimbot:Check() or (_ENV.GLOBALS_SETTINGS['Skill Usage'] and _ENV.__XYN_TARGETER) then
                                 return _Old(self, arg1, _ENV.Target)
                             end
 
@@ -2836,7 +2835,7 @@ return(function(Installer)
                         end
 
                         if method == "FireServer" and self.Name == "RemoteEvent" and typeof(arg1) == "Vector3" and arg2 == nil then
-                            if Module.Aimbot:Check() or (GLOBALS_SETTINGS['Skill Usage'] and _ENV.__XYN_TARGETER) then
+                            if Module.Aimbot:Check() or (_ENV.GLOBALS_SETTINGS['Skill Usage'] and _ENV.__XYN_TARGETER) then
                                 return _Old(self, _ENV.Target)
                             end
 
